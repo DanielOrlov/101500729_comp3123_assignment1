@@ -1,6 +1,6 @@
 const express = require("express")
 const userRoutes = require("./routes/users")
-const employeeRoutes = require("./routes/employees")
+//const employeeRoutes = require("./routes/employees")
 const mongoose = require("mongoose")
 
 const app = express()
@@ -13,7 +13,7 @@ app.use(express.urlencoded())
 
 
 app.use("/api/v1", userRoutes)
-app.use("/api/v1", employeeRoutes)
+//app.use("/api/v1", employeeRoutes)
 app.use(express.urlencoded({extended: true}))
 
 app.route("/")
