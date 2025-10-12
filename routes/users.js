@@ -2,14 +2,15 @@ const express = require("express")
 const routes = express.Router()
 
 
-const userModel = require("../models/users")
+const UserModel = require("../models/users")
+const bcrypt = require("bcrypt");
 const mongoose = require("mongoose")
 
 
 
-//Get All Books
+//Get All Users
 routes.get("/users", (req, res) => {
-    userModel.find({})
+    UserModel.find({})
         .then((users)=>{
             res.json({
                 status: true,
@@ -34,7 +35,7 @@ routes.post("/users", async (req, res) => {
         res.status(201).json({
             status: true,
             message: "User registered successfully",
-            data: newBook
+            data: newUser
         })
     }catch (error){
         res.status(500).json({
@@ -43,6 +44,55 @@ routes.post("/users", async (req, res) => {
         })
     }
 })
+
+// User Login
+routes.post("/users/login", async (req, res) => {
+  const { login, password } = req.body;
+
+  try {
+    if (!login || !password) {
+      return res.status(400).json({
+        status: false,
+        message: "Email or username, and password are required"
+      });
+    }
+
+    const looksLikeEmail = login.includes("@");
+    const query = looksLikeEmail
+      ? { email: login.toLowerCase().trim() }
+      : { username: login.trim() };
+
+    const user = await UserModel.findOne(query).select("+password");
+    if (!user) {
+      return res.status(401).json({
+        status: false,
+        message: "No user with this username or email"
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({
+        status: false,
+        message: "Invalid password"
+      });
+    }
+
+    const { password: _, __v, ...userData } = user.toObject();
+
+    res.status(200).json({
+      status: true,
+      message: "Login successful",
+      user: userData
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message
+    });
+  }
+});
 
 
 module.exports = routes
