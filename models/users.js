@@ -1,47 +1,52 @@
 const mongoose = require("mongoose")
 
 const userSchema = new mongoose.Schema({
-    
-    "_id": "ObjectId",
-    "username": {
-        type: String,
-        required: [true, "Username is required"],
-        unique: [true, "Username is already in use"],
-        trim: true,
-        maxlength: 30
+
+        "username": {
+            type: String,
+            required: [true, "Username is required"],
+            unique: [true, "Username is already in use"],
+            trim: true,
+            maxlength: 30
+        },
+        "email": {
+            type: String,
+            required: [true, "Email is required"],
+            unique: [true, "Email is already in use"],
+            lowercase: true,
+            trim: true,
+            match: [
+                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/,
+                "Please enter a valid email address"
+            ]
+        },
+        password: {
+          type: String,
+          required: [true, "Password is required"],
+          minlength: [6, "Password must be at least 6 characters long"],
+          trim: true,
+          select: false // exclude password by default when fetching user
+        }      // must be hashed
     },
-    "email": {
-        type: String,
-        required: [true, "Email is required"],
-        unique: [true, "Email is already in use"],
-        lowercase: true,
-        trim: true,
-        match: [
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/,
-            "Please enter a valid email address"
-        ]
-    },
-    "password": "String",      // must be hashed
-    "created_at": "Date",
-    "updated_at": "Date"
+    {timestamps: true}
+)
+
+// Hash password before saving
+userSchema.pre("save", async function (next) {
     
-    // title: {
-    //     type: String,
-    //     required: [true, "Title is required" ],
-    //     unique: true,
-    //     trim: true,
-    //     maxlength: 200
-    // },
-    // author: String,
-    // price: {
-    //     type: Number,
-    //     required: [true, "Price is required"],
-    //     min: [0, "Price cannot be negative"]
-    // },
-    // rating: {
-    //     type: Number,
-    //     default: 0,
-    // }
+  if (!this.isModified("password")) return next();
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
+  }
 })
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 module.exports = mongoose.model("User", userSchema)
