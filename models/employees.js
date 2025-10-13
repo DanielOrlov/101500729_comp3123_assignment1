@@ -1,8 +1,7 @@
 const mongoose = require("mongoose")
-const bcrypt = require("bcrypt");
 
 const employeeSchema = new mongoose.Schema({
-    
+
         first_name: {
             type: String,
             trim: true,
