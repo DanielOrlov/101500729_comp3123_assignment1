@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "a2e4e404-a3a2-42a9-8750-f8fb4886a611",
+		"name": "comp3123_assignment1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48726166",
+		"_collection_link": "https://danielorlov-173181.postman.co/workspace/COMP3095-Webdev~ba09d451-c68d-46ed-9103-bc1d8f66d469/collection/48726166-a2e4e404-a3a2-42a9-8750-f8fb4886a611?action=share&source=collection_link&creator=48726166"
+	},
+	"item": [
+		{
+			"name": "get-all-users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_employee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"first_name\": \"Alice\",\r\n  \"last_name\": \"Johnson\",\r\n  \"email\": \"alice.johnson@example.com\",\r\n  \"position\": \"Designer\",\r\n  \"salary\": 85000,\r\n  \"date_of_joining\": \"2023-08-10T00:00:00.000Z\",\r\n  \"department\": \"Design\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/v1/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Daniel\",\r\n    \"email\": \"daniel@email.com\",\r\n    \"password\": \"pswd1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-sign-in",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\": \"daniel@email.com\",\r\n    \"password\": \"pswd1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/v1/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-all-employees",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/v1/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-employee-by-id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/v1/employees/68ec4617c4298b8490ac37c4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"employees",
+						"68ec4617c4298b8490ac37c4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-employee",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"Chandler\",\r\n    \"last_name\": \"Bing\",\r\n    \"position\": \"Transpondster\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/v1/employees/68ec4617c4298b8490ac37c4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"employees",
+						"68ec4617c4298b8490ac37c4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-employee",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"Chandler\",\r\n    \"last_name\": \"Bing\",\r\n    \"position\": \"Transpondster\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/v1/employees/68ec4beabf3289e4e8183f5a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"employees",
+						"68ec4beabf3289e4e8183f5a"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
