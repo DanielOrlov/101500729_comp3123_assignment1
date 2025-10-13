@@ -73,5 +73,74 @@ routes.get("/employees/:employeeid", async (req, res) => {
    
 })
 
+//Update existing Employee By Id
+routes.put("/employees/:employeeid", async (req, res) => {
+    const employeeId = req.params.employeeid
+    const updateData = req.body
+
+    try {
+        if(!mongoose.Types.ObjectId.isValid(employeeId)){
+            return res.status(400).json({
+                status: false,
+                message: "Invalid Employee ID"
+            })
+        }
+
+         //logic to update employee by id
+        const updatedEmployee = await EmployeeModel.findByIdAndUpdate(employeeId, updateData, {new: true})
+        if(!updatedEmployee) {
+            return res.status(404).json({
+                status: false,
+                message: `Employee not found for id: ${employeeId}`
+            })
+        }
+
+        res.status(200).json({
+            status: true,
+            message: `Employee updated successfully for id: ${employeeId}`,
+            data: updatedEmployee,
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+})
+
+//Delete Employee By ID
+routes.delete("/employees/:employeeid", async (req, res) => {
+    const employeeId = req.params.employeeid
+
+    try {
+        if(!mongoose.Types.ObjectId.isValid(employeeId)){
+            return res.status(400).json({
+                status: false,
+                message: "Invalid Employee ID"
+            })
+        }
+        
+         //logic to delete book by id
+         const deletedEmployee = await EmployeeModel.findByIdAndDelete(employeeId)
+         if(!deletedEmployee) {
+             return res.status(404).json({
+                 status: false,
+                 message: `Employee not found for id: ${employeeId}`
+             })
+         }
+
+        res.status(204).json({
+            status: true,
+            message: `Employee deleted successfully for id: ${employeeId}`,
+            data: deletedEmployee,
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+})
+
 
 module.exports = routes
