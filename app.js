@@ -20,10 +20,10 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/employees', employeeRoutes);
 
 // (optional) 404 + error handler
-app.use((req, res) => res.status(404).json({ error: 'Not found' }));
-app.use((err, req, res, _next) => {
-  console.error(err);
-  res.status(err.status || 500).json({ error: err.message || 'Server error' });
-});
+// app.use((req, res) => res.status(404).json({ error: 'Not found' }));
+// app.use((err, req, res, _next) => {
+//   console.error(err);
+//   res.status(err.status || 500).json({ error: err.message || 'Server error' });
+// });
 
 module.exports = app;
