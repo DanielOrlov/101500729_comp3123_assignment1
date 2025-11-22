@@ -1,7 +1,2 @@
-// api/index.js
-import app from '../app.js';
-
-// Vercel's Node runtime treats an exported function/app as the handler
-export default function handler(req, res) {
-  return app(req, res);
-}
+const app = require('../app');
+module.exports = app; // Express app is a request handler

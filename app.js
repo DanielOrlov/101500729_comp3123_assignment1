@@ -1,21 +1,22 @@
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-
-import userRouter from './routes/users.js';
-import employeeRouter from './routes/employees.js';
-
-import { connectDB } from './db.js';
+const express = require('express');
+const cors = require('cors');
+const userRoutes = require('./routes/users');
+const employeeRoutes = require('./routes/employees');
+const { connectDB } = require('./db');
 
 const app = express();
-app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-await connectDB();
+// kick off the connection without top-level await
+connectDB()
+  .then(() => console.log('DB connected'))
+  .catch(err => console.error('DB connect error:', err.message));
 
-app.get('/health', (req, res) => res.json({ ok: true }));
-app.use("/api/v1", userRouter)
-app.use("/api/v1", employeeRouter)
+app.get('/health', (_req, res) => res.json({ ok: true }));
 
-export default app;
+app.use('/api/v1', userRoutes);
+app.use('/api/v1', employeeRoutes);
+
+module.exports = app;
