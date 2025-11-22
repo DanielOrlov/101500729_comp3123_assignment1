@@ -143,7 +143,7 @@ routes.patch("/:employeeid", async (req, res) => {
         res.status(200).json({
             status: true,
             message: `Department updated successfully for id: ${employeeId}`,
-            data: updatedEmployee,
+            data: updated,
         })
     } catch (error) {
         res.status(500).json({
