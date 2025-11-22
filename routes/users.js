@@ -9,7 +9,7 @@ const mongoose = require("mongoose")
 
 
 //Get All Users
-routes.get("/users", (req, res) => {
+routes.get("/", (req, res) => {
     UserModel.find({})
         .then((users)=>{
             res.json({
@@ -27,7 +27,7 @@ routes.get("/users", (req, res) => {
 })
 
 //Add NEW User
-routes.post("/users", async (req, res) => {
+routes.post("/", async (req, res) => {
     const newUserData = req.body
     try{
         const newUserModel = new UserModel(newUserData)
@@ -46,7 +46,7 @@ routes.post("/users", async (req, res) => {
 })
 
 // User Login
-routes.post("/users/login", async (req, res) => {
+routes.post("/login", async (req, res) => {
   const { login, password } = req.body;
 
   try {

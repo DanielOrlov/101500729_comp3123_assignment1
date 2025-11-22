@@ -8,7 +8,7 @@ const mongoose = require("mongoose")
 
 
 //Get All Employees
-routes.get("/employees", (req, res) => {
+routes.get("/", (req, res) => {
     EmployeeModel.find({})
         .then((employees)=>{
             res.json({
@@ -26,7 +26,7 @@ routes.get("/employees", (req, res) => {
 })
 
 //Add NEW Employee
-routes.post("/employees", async (req, res) => {
+routes.post("/", async (req, res) => {
     const newEmployeeData = req.body
     try{
         const newEmployeeModel = new EmployeeModel(newEmployeeData)
@@ -45,7 +45,7 @@ routes.post("/employees", async (req, res) => {
 })
 
 //Get Employee By ID
-routes.get("/employees/:employeeid", async (req, res) => {
+routes.get("/:employeeid", async (req, res) => {
     const employeeid = req.params.employeeid
 
     if(!mongoose.Types.ObjectId.isValid(employeeid)){
@@ -74,7 +74,7 @@ routes.get("/employees/:employeeid", async (req, res) => {
 })
 
 //Update existing Employee By Id
-routes.put("/employees/:employeeid", async (req, res) => {
+routes.put("/:employeeid", async (req, res) => {
     const employeeId = req.params.employeeid
     const updateData = req.body
 
@@ -109,7 +109,7 @@ routes.put("/employees/:employeeid", async (req, res) => {
 })
 
 //Delete Employee By ID
-routes.delete("/employees/:employeeid", async (req, res) => {
+routes.delete("/:employeeid", async (req, res) => {
     const employeeId = req.params.employeeid
 
     try {
