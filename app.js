@@ -13,11 +13,11 @@ connectDB()
   .then(() => console.log('DB connected'))
   .catch(err => console.error('DB connect error:', err.message));
 
-app.get('/health', (_req, res) => res.json({ ok: true }));
+app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
 // ✅ Mount routers at their final prefixes
-app.use('/v1/users', userRoutes);
-app.use('/v1/employees', employeeRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/employees', employeeRoutes);
 
 // (optional) 404 + error handler
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
