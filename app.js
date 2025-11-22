@@ -16,8 +16,8 @@ connectDB()
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
 // ✅ Mount routers at their final prefixes
-app.use('/api/v1/users', userRoutes);
-app.use('/api/v1/employees', employeeRoutes);
+app.use('/v1/users', userRoutes);
+app.use('/v1/employees', employeeRoutes);
 
 // (optional) 404 + error handler
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
