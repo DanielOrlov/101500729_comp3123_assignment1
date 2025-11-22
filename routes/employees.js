@@ -44,6 +44,66 @@ routes.post("/", async (req, res) => {
     }
 })
 
+// GET /api/v1/employees/search
+routes.get('/search', async (req, res) => {
+  try {
+    const {
+      q,
+      department,
+      email,
+      page = 1,
+      limit = 20,
+      sort = 'last_name'
+    } = req.query;
+
+    const filters = {};
+
+    // department filter (exact)
+    if (department) {
+      filters.department = department;
+    }
+
+    // email filter (exact if provided)
+    if (email) {
+      filters.email = email.trim().toLowerCase();
+    }
+
+    // free-text across name/email (case-insensitive)
+    if (q && q.trim()) {
+      const rx = new RegExp(q.trim(), 'i');
+      filters.$or = [
+        { first_name: rx },
+        { last_name: rx },
+        { email: rx }
+      ];
+    }
+
+    const pageNum = Math.max(parseInt(page) || 1, 1);
+    const limitNum = Math.min(Math.max(parseInt(limit) || 20, 1), 100);
+
+    const [data, total] = await Promise.all([
+      EmployeeModel
+        .find(filters)
+        .sort(sort)
+        .skip((pageNum - 1) * limitNum)
+        .limit(limitNum),
+      EmployeeModel.countDocuments(filters)
+    ]);
+
+    res.json({
+      status: true,
+      message: 'Employees fetched',
+      count: data.length,
+      page: pageNum,
+      totalPages: Math.ceil(total / limitNum),
+      total,
+      data
+    });
+  } catch (err) {
+    res.status(500).json({ status: false, message: err.message });
+  }
+});
+
 //Get Employee By ID
 routes.get("/:employeeid", async (req, res) => {
     const employeeid = req.params.employeeid
@@ -186,66 +246,6 @@ routes.delete("/:employeeid", async (req, res) => {
         })
     }
 })
-
-// GET /api/v1/employees/search
-routes.get('/search', async (req, res) => {
-  try {
-    const {
-      q,
-      department,
-      email,
-      page = 1,
-      limit = 20,
-      sort = 'last_name'
-    } = req.query;
-
-    const filters = {};
-
-    // department filter (exact)
-    if (department) {
-      filters.department = department;
-    }
-
-    // email filter (exact if provided)
-    if (email) {
-      filters.email = email.trim().toLowerCase();
-    }
-
-    // free-text across name/email (case-insensitive)
-    if (q && q.trim()) {
-      const rx = new RegExp(q.trim(), 'i');
-      filters.$or = [
-        { first_name: rx },
-        { last_name: rx },
-        { email: rx }
-      ];
-    }
-
-    const pageNum = Math.max(parseInt(page) || 1, 1);
-    const limitNum = Math.min(Math.max(parseInt(limit) || 20, 1), 100);
-
-    const [data, total] = await Promise.all([
-      EmployeeModel
-        .find(filters)
-        .sort(sort)
-        .skip((pageNum - 1) * limitNum)
-        .limit(limitNum),
-      EmployeeModel.countDocuments(filters)
-    ]);
-
-    res.json({
-      status: true,
-      message: 'Employees fetched',
-      count: data.length,
-      page: pageNum,
-      totalPages: Math.ceil(total / limitNum),
-      total,
-      data
-    });
-  } catch (err) {
-    res.status(500).json({ status: false, message: err.message });
-  }
-});
 
 
 
