@@ -108,6 +108,51 @@ routes.put("/:employeeid", async (req, res) => {
     }
 })
 
+//Update employees department
+routes.patch("/:employeeid", async (req, res) => {
+    const employeeId = req.params.employeeid
+    const {department} = req.body
+
+    try {
+        if(!mongoose.Types.ObjectId.isValid(employeeId)){
+            return res.status(400).json({
+                status: false,
+                message: "Invalid Employee ID"
+            })
+        }
+        if (!department || typeof department !== "string" || !department.trim()) {
+            return res.status(400).json({ status: false, message: "Department is required" });
+        }
+
+
+        //logic to update employee's department
+        const update = { $set: { department: department.trim() } }; 
+        const updated = await EmployeeModel.findByIdAndUpdate(
+            employeeId,
+            update,
+            { new: true, runValidators: true, context: "query" }
+        );
+
+        if(!updated) {
+            return res.status(404).json({
+                status: false,
+                message: `Employee not found for id: ${employeeId}`
+            })
+        }
+
+        res.status(200).json({
+            status: true,
+            message: `Department updated successfully for id: ${employeeId}`,
+            data: updatedEmployee,
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+})
+
 //Delete Employee By ID
 routes.delete("/:employeeid", async (req, res) => {
     const employeeId = req.params.employeeid
