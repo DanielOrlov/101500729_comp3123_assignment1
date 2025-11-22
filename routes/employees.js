@@ -45,7 +45,7 @@ routes.post("/", async (req, res) => {
 })
 
 //Get Employee By ID
-routes.get("/:employeeid([0-9a-fA-F]{24})", async (req, res) => {
+routes.get("/:employeeid", async (req, res) => {
     const employeeid = req.params.employeeid
 
     if(!mongoose.Types.ObjectId.isValid(employeeid)){
