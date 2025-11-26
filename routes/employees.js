@@ -60,7 +60,7 @@ routes.get('/search', async (req, res) => {
 
     // department filter (exact)
     if (department) {
-      filters.department = department;
+      filters.department = department.trim().toLowerCase();
     }
 
     // email filter (exact if provided)
@@ -68,13 +68,14 @@ routes.get('/search', async (req, res) => {
       filters.email = email.trim().toLowerCase();
     }
 
-    // free-text across name/email (case-insensitive)
+    // free-text across name/email/department (case-insensitive)
     if (q && q.trim()) {
       const rx = new RegExp(q.trim(), 'i');
       filters.$or = [
         { first_name: rx },
         { last_name: rx },
-        { email: rx }
+        { email: rx },
+        { department: rx }
       ];
     }
 
