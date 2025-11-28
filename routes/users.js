@@ -1,5 +1,6 @@
 const express = require("express")
 const routes = express.Router()
+const jwt = require("jsonwebtoken");
 
 
 const UserModel = require("../models/users")
@@ -45,6 +46,20 @@ routes.post("/", async (req, res) => {
     }
 })
 
+function generateToken(user) {
+  return jwt.sign(
+    {
+      id: user._id,
+      username: user.username,
+      email: user.email
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN || "1h",
+    }
+  );
+}
+
 // User Login
 routes.post("/login", async (req, res) => {
   const { login, password } = req.body;
@@ -80,11 +95,24 @@ routes.post("/login", async (req, res) => {
 
     const { password: _, __v, ...userData } = user.toObject();
 
-    res.status(200).json({
-      status: true,
-      message: "Login successful",
-      user: userData
-    });
+
+    //Creating Token
+    const token = generateToken(user);
+
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", 
+        sameSite: "none",
+        maxAge: 60 * 60 * 1000, // 1 hour
+      })
+      .status(200)
+      .json({
+        status: true,
+        message: "Login successful",
+        user: userData,
+        token
+      });
 
   } catch (error) {
     res.status(500).json({

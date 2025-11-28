@@ -5,10 +5,12 @@ const routes = express.Router()
 const EmployeeModel = require("../models/employees")
 const mongoose = require("mongoose")
 
+const auth = require("../middleware/auth");
+
 
 
 //Get All Employees
-routes.get("/", (req, res) => {
+routes.get("/", auth(), (req, res) => {
     EmployeeModel.find({})
         .then((employees)=>{
             res.json({
@@ -26,7 +28,7 @@ routes.get("/", (req, res) => {
 })
 
 //Add NEW Employee
-routes.post("/", async (req, res) => {
+routes.post("/", auth(), async (req, res) => {
     const newEmployeeData = req.body
     try{
         const newEmployeeModel = new EmployeeModel(newEmployeeData)
@@ -45,7 +47,7 @@ routes.post("/", async (req, res) => {
 })
 
 // GET /api/v1/employees/search
-routes.get('/search', async (req, res) => {
+routes.get('/search', auth(), async (req, res) => {
   try {
     const {
       q,
@@ -106,7 +108,7 @@ routes.get('/search', async (req, res) => {
 });
 
 //Get Employee By ID
-routes.get("/:employeeid", async (req, res) => {
+routes.get("/:employeeid", auth(), async (req, res) => {
     const employeeid = req.params.employeeid
 
     if(!mongoose.Types.ObjectId.isValid(employeeid)){
@@ -135,7 +137,7 @@ routes.get("/:employeeid", async (req, res) => {
 })
 
 //Update existing Employee By Id
-routes.put("/:employeeid", async (req, res) => {
+routes.put("/:employeeid", auth(), async (req, res) => {
     const employeeId = req.params.employeeid
     const updateData = req.body
 
@@ -170,7 +172,7 @@ routes.put("/:employeeid", async (req, res) => {
 })
 
 //Update employees department
-routes.patch("/:employeeid", async (req, res) => {
+routes.patch("/:employeeid", auth(), async (req, res) => {
     const employeeId = req.params.employeeid
     const {department} = req.body
 
@@ -215,7 +217,7 @@ routes.patch("/:employeeid", async (req, res) => {
 })
 
 //Delete Employee By ID
-routes.delete("/:employeeid", async (req, res) => {
+routes.delete("/:employeeid", auth(), async (req, res) => {
     const employeeId = req.params.employeeid
 
     try {

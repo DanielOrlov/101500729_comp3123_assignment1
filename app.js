@@ -1,13 +1,38 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 const userRoutes = require('./routes/users');
 const employeeRoutes = require('./routes/employees');
 const { connectDB } = require('./db');
+require("dotenv").config();
 
 const app = express();
-app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+const allowedOrigins = [
+  "https://101500729-comp3123-assignment1.vercel.app",
+  "http://localhost:3000"
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true); // origin allowed
+      }
+
+      return callback(new Error("CORS blocked: Not allowed by CORS"), false);
+    },
+
+    credentials: true,
+  })
+);
 
 connectDB()
   .then(() => console.log('DB connected'))
