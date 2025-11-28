@@ -1,10 +1,14 @@
+require("dotenv").config();
+
 const express = require('express');
-const cors = require('cors');
 const cookieParser = require("cookie-parser");
+const cors = require('cors');
+
+
 const userRoutes = require('./routes/users');
 const employeeRoutes = require('./routes/employees');
 const { connectDB } = require('./db');
-require("dotenv").config();
+
 
 const app = express();
 
@@ -13,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const allowedOrigins = [
-  "https://101500729-comp3123-assignment1.vercel.app",
+  "https://101500729-comp3123-assignment2-reac.vercel.app",
   "http://localhost:3000"
 ];
 
