@@ -1,13 +1,10 @@
 const express = require("express")
 const routes = express.Router()
-
-
-const EmployeeModel = require("../models/employees")
 const mongoose = require("mongoose")
-
+const multer = require("multer");
+const EmployeeModel = require("../models/employees")
 const auth = require("../middleware/auth");
 
-const multer = require("multer");
 
 
 
@@ -277,7 +274,7 @@ routes.delete("/:employeeid", auth(), async (req, res) => {
 })
 
 // POST /api/v1/employees/:id/avatar
-router.post("/:employeeid/avatar", upload.single("avatar"), async (req, res) => {
+routes.post("/:employeeid/avatar", upload.single("avatar"), async (req, res) => {
   try {
     const employeeId = req.params.id;
 
