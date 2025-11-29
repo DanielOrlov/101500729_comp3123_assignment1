@@ -285,7 +285,7 @@ routes.post("/:employeeid/avatar", upload.single("avatar"), async (req, res) => 
     // File path as it will be accessible from the frontend
     const avatarUrl = `/uploads/avatars/${req.file.filename}`;
 
-    const employee = await Employee.findByIdAndUpdate(
+    const employee = await EmployeeModel.findByIdAndUpdate(
       employeeId,
       { avatarUrl },
       { new: true }

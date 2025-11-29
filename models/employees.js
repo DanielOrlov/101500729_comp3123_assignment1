@@ -55,7 +55,7 @@ const employeeSchema = new mongoose.Schema({
     },
     avatarUrl: { 
         type: String, 
-        default: "/uploads/avatars/default_av.jpg" }
+        default: null, }
 },
     { timestamps: true }
 )
