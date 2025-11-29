@@ -16,13 +16,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// const allowedOrigins = [
-//   "https://101500729-comp3123-assignment2-reac.vercel.app",
-//   "http://localhost:3000"
-// ];
-
-// const allowedOrigins = "http://localhost:3000";
-
 app.use(cors());
 
 connectDB()

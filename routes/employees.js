@@ -52,7 +52,8 @@ routes.get('/search', auth(), async (req, res) => {
     const {
       q,
       department,
-      email,
+      position,
+    //   email,
       page = 1,
       limit = 20,
       sort = 'last_name'
@@ -65,19 +66,25 @@ routes.get('/search', auth(), async (req, res) => {
       filters.department = department.trim().toLowerCase();
     }
 
-    // email filter (exact if provided)
-    if (email) {
-      filters.email = email.trim().toLowerCase();
+    // position filter (exact)
+    if (position) {
+      filters.position = position.trim().toLowerCase();
     }
+
+    // email filter (exact if provided)
+    // if (email) {
+    //   filters.email = email.trim().toLowerCase();
+    // }
 
     // free-text across name/email/department (case-insensitive)
     if (q && q.trim()) {
       const rx = new RegExp(q.trim(), 'i');
       filters.$or = [
-        { first_name: rx },
-        { last_name: rx },
-        { email: rx },
-        { department: rx }
+        // { first_name: rx },
+        // { last_name: rx },
+        // { email: rx },
+        { department: rx },
+        { position: rx}
       ];
     }
 
