@@ -4,6 +4,8 @@ const express = require('express');
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
 
+const path = require("path");
+
 
 const userRoutes = require('./routes/users');
 const employeeRoutes = require('./routes/employees');
@@ -63,6 +65,8 @@ app.get('/api/health', (_req, res) => res.json({ ok: true }));
 // ✅ Mount routers at their final prefixes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/employees', employeeRoutes);
+
+app.use("/uploads/avatars", express.static(path.join(__dirname, "uploads")));
 
 // (optional) 404 + error handler
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));

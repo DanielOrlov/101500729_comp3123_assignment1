@@ -7,6 +7,25 @@ const mongoose = require("mongoose")
 
 const auth = require("../middleware/auth");
 
+const multer = require("multer");
+
+
+
+
+// Storing the avatars
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "../uploads/avatars"); // local folder at backend root
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext);
+  },
+});
+
+const upload = multer({ storage });
+
 
 
 //Get All Employees
@@ -256,6 +275,39 @@ routes.delete("/:employeeid", auth(), async (req, res) => {
         })
     }
 })
+
+// POST /api/v1/employees/:id/avatar
+router.post("/:employeeid/avatar", upload.single("avatar"), async (req, res) => {
+  try {
+    const employeeId = req.params.id;
+
+    if (!req.file) {
+      return res.status(400).json({ status: false, message: "No file uploaded" });
+    }
+
+    // File path as it will be accessible from the frontend
+    const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+
+    const employee = await Employee.findByIdAndUpdate(
+      employeeId,
+      { avatarUrl },
+      { new: true }
+    );
+
+    if (!employee) {
+      return res.status(404).json({ status: false, message: "Employee not found" });
+    }
+
+    res.json({
+      status: true,
+      message: "Avatar uploaded",
+      employee,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: false, message: "Server error" });
+  }
+});
 
 
 
