@@ -4,7 +4,6 @@ const mongoose = require("mongoose")
 const multer = require("multer");
 const EmployeeModel = require("../models/employees")
 const auth = require("../middleware/auth");
-const upload = multer({ storage });
 const path = require("path"); 
 
 
@@ -23,7 +22,7 @@ const storage = multer.diskStorage({
 });
 
 
-
+const upload = multer({ storage });
 
 
 //Get All Employees
