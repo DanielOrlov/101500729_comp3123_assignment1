@@ -274,7 +274,7 @@ routes.delete("/:employeeid", auth(), async (req, res) => {
 })
 
 // POST /api/v1/employees/:id/avatar
-routes.post("/:employeeid/avatar", upload.single("avatar"), async (req, res) => {
+routes.post("/:id/avatar", upload.single("avatar"), async (req, res) => {
   try {
     const employeeId = req.params.id;
 
